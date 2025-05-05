@@ -29,7 +29,7 @@ repos:
         files: "\\.sh$"
 
   - repo: https://github.com/ansible/ansible-lint
-    rev: v25.1.0
+    rev: v25.1.1
     hooks:
       - id: ansible-lint
         additional_dependencies:
@@ -70,6 +70,14 @@ repos:
           - pathlib
           - pyaml
 
+      - id: check-galaxy-version
+        name: Verify correct version for galaxy.yml
+        entry: scripts/galaxy_version.py
+        language: python
+        pass_filenames: false
+        additional_dependencies:
+          - ruamel.yaml
+
       - id: jinja-syntax-check
         name: jinja-syntax-check
         entry: tests/scripts/check-templates.py
@@ -79,13 +87,21 @@ repos:
         additional_dependencies:
           - jinja2
 
-      - id: render-readme-versions
-        name: Update versions in README.md to match their defaults values
+      - id: propagate-ansible-variables
+        name: Update static files referencing default kubespray values
         language: python
         additional_dependencies:
           - ansible-core>=2.16.4
-        entry: scripts/render_readme_version.yml
+        entry: scripts/propagate_ansible_variables.yml
         pass_filenames: false
+
+      - id: check-checksums-sorted
+        name: Check that our checksums are correctly sorted by version
+        entry: scripts/assert-sorted-checksums.yml
+        language: python
+        pass_filenames: false
+        additional_dependencies:
+          - ansible
 
   - repo: https://github.com/markdownlint/markdownlint
     rev: v0.12.0

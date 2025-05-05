@@ -104,6 +104,13 @@ dependencies:
     tags:
       - gateway_api
 
+  - role: kubernetes-apps/kubelet-csr-approver
+    when:
+      - kubelet_csr_approver_enabled
+      - inventory_hostname == groups['kube_control_plane'][0]
+    tags:
+      - kubelet-csr-approver
+
   - role: kubernetes-apps/metallb
     when:
       - metallb_enabled
@@ -121,7 +128,7 @@ dependencies:
   - role: kubernetes-apps/scheduler_plugins
     when:
       - scheduler_plugins_enabled
-      - kube_major_version is version('v1.29', '<')
+      - kube_major_version is version('1.29', '<')
       - inventory_hostname == groups['kube_control_plane'][0]
     tags:
       - scheduler_plugins

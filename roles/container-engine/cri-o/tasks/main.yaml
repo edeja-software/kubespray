@@ -168,7 +168,7 @@
     mode: "0644"
   with_items:
     - option: driver
-      value: '"overlay"'
+      value: '"{{ crio_storage_driver }}"'
     - option: graphroot
       value: '"/var/lib/containers/storage"'
     - option: runroot
